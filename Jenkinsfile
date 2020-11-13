@@ -14,10 +14,19 @@ def tag
 def packageJSON
 def triggerUser
 def GIT_COMMIT_DESC
-def timestamp = new SimpleDateFormat("yyyy-MM-dd.HH.mm.ss").format(new Date())
 def gitCredentials = 'gitCredentials_id'  
 
-//properties([pipelineTriggers([cron('H/3 * * * *')])]) //Adding CRON jobs
+//Standard Timestamp
+def timestamp = new SimpleDateFormat("yyyy-MM-dd.HH.mm.ss").format(new Date())
+
+//DateFormat/Date Increment 
+
+def dateFormat = new SimpleDateFormat("MM/dd/yyyy")
+def date = new Date()
+def newtimestamp = dateFormat.format(date + 1) // Use (date - 1) if needed previous date 
+
+//Adding CRON jobs
+//properties([pipelineTriggers([cron('H/3 * * * *')])]) 
 
 pipeline {
     agent any //{
