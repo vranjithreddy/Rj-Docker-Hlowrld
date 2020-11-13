@@ -63,7 +63,17 @@ pipeline {
                         echo "${tag}"
                         echo "${timestamp}"
                 }
-           }
+           }    
+     
+      stage('Trigger Branch Build') {
+        steps {
+            script {
+                    echo "Triggering job for branch ${env.BRANCH_NAME}"
+                    BRANCH_TO_TAG=env.BRANCH_NAME.replace("/","%2F")
+                    build job: "../name_of_the_job/branch_name", wait: false //if you need the current to wait until triggered job is succssful use "wait: true" //branch_name use this if you have jobs configured by brnaches
+            }
+         }
+      } 
     }
     post {
       always {
