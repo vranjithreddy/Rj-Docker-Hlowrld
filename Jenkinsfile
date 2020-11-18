@@ -73,7 +73,27 @@ pipeline {
                     build job: "../name_of_the_job/branch_name", wait: false //if you need the current to wait until triggered job is succssful use "wait: true" //branch_name use this if you have jobs configured by brnaches
             }
          }
-      } 
+      }
+          stage('Parallel') {    
+               steps {
+                  parallel(
+                   "step1": { 
+                    withNpmrc([npmrcId: 'npmrcId', image: 'imageId']) { 
+                      catchError {
+                         timeout(time: 1, unit: 'MINUTES') { //this helps in aborting the build. Use when only needed 
+                            sh 'npm run test1'
+                           }
+                        }
+                     }
+                  },
+                "step2": {
+                //   catchError {  //Not recommended. Use this carefully 
+                     sh 'npm run test2'
+                //         }
+                    }
+                )
+            }
+        } 
     }
     post {
       always {
